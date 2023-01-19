@@ -1,0 +1,29 @@
+{
+  "name": "push-registry",
+  "version": "1.0.0",
+  "description": "A shorthand for pushing a Docker image to a container registry, cleaning up your local images, and creating a github release",
+  "main": "push-registry",
+  "scripts": {
+    "test": "push-registry"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/micahkatz/push-registry.git"
+  },
+  "keywords": [
+    "docker",
+    "registry",
+    "script",
+    "zsh",
+    "bash",
+    "shorthand",
+    "github",
+    "git"
+  ],
+  "author": "Micah Katz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/micahkatz/push-registry/issues"
+  },
+  "homepage": "https://github.com/micahkatz/push-registry#readme"
+}
