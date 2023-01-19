@@ -1,0 +1,53 @@
+#!/bin/zsh
+
+if [ -z "$1" ]
+then
+    echo "Usage: push-registry <image-name> [-g -d]"
+else
+
+    if [ -z "$REGISTRY" ]
+    then
+        echo "REGISTRY environment variable is empty."
+    else
+    
+        echo "Pushing $1 to $REGISTRY/$1"
+        
+        # push to registry
+        docker tag $1 $REGISTRY/$1
+        {
+            docker push $REGISTRY/$1
+        } || {
+            echo "FAILED TO PUSH: ending program"
+            exit
+        } 
+
+        while getopts 'gd:' OPTION; do
+            case "$OPTION" in
+                g)
+                    # create a github release
+
+                    VERSION=${1##*:} # remove everything before the colon (including the colon)
+
+                    if [ -z "$VERSION" ]
+                    then
+                        echo "Not Creating Release: No version supplied"
+                    else
+                        echo "Creating GitHub Release for $VERSION"
+
+                        gh release create $VERSION --generate-notes
+                    fi
+                ;;
+                d)
+                    echo "Deleting assosciated images"
+                    # remove the image
+                    echo "docker rmi $1"
+                    echo "docker rmi $REGISTRY/$1"
+                    docker rmi $1
+                    docker rmi $REGISTRY/$1
+                ;;
+            esac
+            done
+            shift "$(($OPTIND -1))"
+    fi
+    
+fi
